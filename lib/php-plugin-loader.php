@@ -16,7 +16,7 @@ class PluginLoader {
       if(substr($name, 0, 1) == '_') continue;
       if(!file_exists($folder . '/index.php')) continue;
       if($name == 'php-plugin-loader') continue;
-      if(in_array($name, $this->excludes)) continue;
+      if(isset($this->excludes) && in_array($name, $this->excludes)) continue;
 
       $plugins[] = $name;
     }
