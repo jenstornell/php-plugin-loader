@@ -44,7 +44,7 @@ class PluginLoader {
     $this->plugins = $this->filter($this->includes);
 
     foreach($this->plugins as $dirname) {
-      include $this->root . '/' . $dirname . '/index.php';
+      require_once $this->root . '/' . $dirname . '/index.php';
     }
   }
 }
