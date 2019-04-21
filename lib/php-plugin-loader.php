@@ -11,6 +11,7 @@ class PluginLoader {
   }
 
   function filter($folders) {
+    $plugins = [];
     foreach($folders as $folder) {
       $name = basename($folder);
       if(substr($name, 0, 1) == '_') continue;
