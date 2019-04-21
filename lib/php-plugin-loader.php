@@ -2,14 +2,12 @@
 class PluginLoader {
   function __construct($root) {
     $this->root = $root;
-    $this->plugins = [];
+    $this->includes = null;
+    $this->excludes = null;
   }
   
-  function set($plugins = null) {
-    //if($plugins)
-    $folders = glob($this->root . '/*', GLOB_ONLYDIR);
-    #print_r($folders);
-    $this->plugins = $this->filter($folders);
+  function all() {
+    $this->includes = glob($this->root . '/*', GLOB_ONLYDIR);
   }
 
   function filter($folders) {
@@ -18,17 +16,32 @@ class PluginLoader {
       if(substr($name, 0, 1) == '_') continue;
       if(!file_exists($folder . '/index.php')) continue;
       if($name == 'php-plugin-loader') continue;
+      if(in_array($name, $this->excludes)) continue;
 
       $plugins[] = $name;
     }
     return $plugins;
   }
 
-  function get() {
-    return $this->plugins;
+  function include($names = []) {
+    foreach($names as $name) {
+      $folders[] = $this->root . '/' . $name;
+    }
+
+    $this->includes = $folders;
+  }
+
+  function exclude($names = []) {
+    $this->excludes = $names;
   }
 
   function load() {
+    if($this->includes === null) {
+      $this->all();
+    }
+
+    $this->plugins = $this->filter($this->includes);
+
     foreach($this->plugins as $dirname) {
       include $this->root . '/' . $dirname . '/index.php';
     }
