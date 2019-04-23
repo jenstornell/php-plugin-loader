@@ -1,7 +1,15 @@
 <?php
 include __DIR__ . '/lib/php-plugin-loader.php';
 
-$plugin_loader = new PluginLoader(__DIR__ . '/tests/plugins', '.');
-$plugin_loader->include(['third', 'first', 'second']);
-$plugin_loader->exclude(['first']);
-$plugin_loader->load();
+$load = new PluginLoader(__DIR__ . '/plugins', ['first']);
+
+/*$load->debug('third', '!first', 'second');
+
+$load->debug('!first', '!second');
+
+$load->debug('first');
+$load->debug();
+*/
+
+$load->load('third', '!first', 'second', '_fourth');
+#$load->plugin('third', '!first', 'second');
